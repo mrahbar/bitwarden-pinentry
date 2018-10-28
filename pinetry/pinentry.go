@@ -13,11 +13,14 @@ import (
 type BitwardenClient struct {
 	Session string
 	ItemId  string
+	Auditor *Auditor
 }
 
 // GetPIN shows window with password textbox, Cancel and Ok buttons.
 // Error is returned if Cancel is pressed.
 func (c *BitwardenClient) GetPIN(settings pinentry.Settings) (string, *common.Error){
+	c.Auditor.Logger.Println("GETPIN got called")
+	c.Auditor.Logger.Println("GETPIN: executing bw get item")
 	cmd := exec.Command("bw", "get", "item", c.ItemId, "--session", c.Session)
 	var out bytes.Buffer
 	cmd.Stdout = &out
@@ -37,16 +40,25 @@ func (c *BitwardenClient) GetPIN(settings pinentry.Settings) (string, *common.Er
 			SrcName: "system", Message: fmt.Sprint(err),
 		}
 	}
-	return item.Login.Password, cmdErr
+
+	if cmdErr != nil {
+		c.Auditor.Logger.Printf("GETPIN: err result - %s", cmdErr.Message)
+		return "", cmdErr
+	} else {
+		c.Auditor.Logger.Println("GETPIN: result ok")
+		return item.Login.Password, nil
+	}
 }
 
 
 // TODO
 func (c *BitwardenClient) Confirm(settings pinentry.Settings) (bool, *common.Error) {
+	c.Auditor.Logger.Println("CONFIRM got called")
 	return true, nil
 }
 
 // TODO
 func (c *BitwardenClient) Message(settings pinentry.Settings) *common.Error {
+	c.Auditor.Logger.Println("MESSAGE got called")
 	return nil
 }

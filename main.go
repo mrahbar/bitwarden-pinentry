@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"flag"
 	"github.com/Tkanos/gonfig"
 	"github.com/foxcpp/go-assuan/pinentry"
 	"github.com/mrahbar/bitwarden-pinentry/bitwarden"
@@ -12,34 +12,55 @@ import (
 )
 
 const ConfigFileName = "bitwarden-pinentry.json"
+const LogFileName = "bitwarden-pinentry.log"
 
 
 func main() {
+	config := flag.String("config", "bitwarden-pinentry.json", "path to bitwarden-pinentry.json file")
+	flag.Parse()
+
 	ex, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
 	exPath := filepath.Dir(ex)
-	fmt.Println(exPath)
+	configpath := *config
+	if *config == "" {
+		configpath = path.Join(exPath, ConfigFileName)
+	}
 
 	configuration := bitwarden.Configuration{}
-	err = gonfig.GetConf(path.Join(exPath, ConfigFileName), &configuration)
+	err = gonfig.GetConf(configpath, &configuration)
 	if err != nil {
 		panic(err)
 	}
 
-	startServe(configuration)
+	logPath := path.Join(exPath, LogFileName)
+	if configuration.LogPath != "" {
+		logPath = configuration.LogPath
+	}
+
+	auditor, err := p.NewAuditor(logPath)
+	if err != nil {
+		panic(err)
+	}
+
+	auditor.Logger.Println("Loaded bitwarden-pinentry.json config")
+	startServe(configuration, auditor)
 }
 
-func startServe(conf bitwarden.Configuration) {
+func startServe(conf bitwarden.Configuration, auditor *p.Auditor) {
 	myClient := p.BitwardenClient{
 		Session: conf.Session,
 		ItemId:  conf.ItemID,
+		Auditor: auditor,
 	}
 	callbacks := pinentry.Callbacks{
 		Confirm: myClient.Confirm,
 		GetPIN:  myClient.GetPIN,
 		Msg:     myClient.Message,
 	}
+
+	auditor.Logger.Println("Starting sessions of bitwarden-pinentry")
 	pinentry.Serve(callbacks, "Hi Ho from bitwarden-pinentry")
 }

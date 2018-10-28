@@ -13,7 +13,9 @@ Currently it is expected that the passphrase is the login password of an item.
   "ItemID": "..."
 }
  ```` 
- 
+
+## Usage
+Simply utilize the gpg-agent parameter ````pinentry-program```` to point to your ````bitwarden-pinentry```` binary in your ````gpg-agent.conf```` file.
 
 ### Limitations
 This is an early working version of ````bitwarden-pinentry```` so be warned your mileage may vary.  
