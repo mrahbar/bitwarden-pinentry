@@ -5,7 +5,7 @@ import (
 	"github.com/Tkanos/gonfig"
 	"github.com/foxcpp/go-assuan/pinentry"
 	"github.com/mrahbar/bitwarden-pinentry/bitwarden"
-	p "github.com/mrahbar/bitwarden-pinentry/pinetry"
+	p "github.com/mrahbar/bitwarden-pinentry/pinentry"
 	"os"
 	"path"
 	"path/filepath"
@@ -16,7 +16,7 @@ const LogFileName = "bitwarden-pinentry.log"
 
 
 func main() {
-	config := flag.String("config", "bitwarden-pinentry.json", "path to bitwarden-pinentry.json file")
+	config := flag.String("config", "", "path to bitwarden-pinentry.json file")
 	flag.Parse()
 
 	ex, err := os.Executable()
@@ -40,12 +40,12 @@ func main() {
 		logPath = configuration.LogPath
 	}
 
-	auditor, err := p.NewAuditor(logPath)
+	auditor, err := p.NewAuditor(logPath, configuration.EnableLog)
 	if err != nil {
 		panic(err)
 	}
 
-	auditor.Logger.Println("Loaded bitwarden-pinentry.json config")
+	auditor.Println("Loaded bitwarden-pinentry.json config")
 	startServe(configuration, auditor)
 }
 
@@ -61,6 +61,6 @@ func startServe(conf bitwarden.Configuration, auditor *p.Auditor) {
 		Msg:     myClient.Message,
 	}
 
-	auditor.Logger.Println("Starting sessions of bitwarden-pinentry")
+	auditor.Println("Starting sessions of bitwarden-pinentry")
 	pinentry.Serve(callbacks, "Hi Ho from bitwarden-pinentry")
 }
