@@ -1,31 +1,38 @@
 package main
 
 import (
-	"flag"
-	"github.com/Tkanos/gonfig"
-	"github.com/foxcpp/go-assuan/pinentry"
-	"github.com/mrahbar/bitwarden-pinentry/bitwarden"
-	p "github.com/mrahbar/bitwarden-pinentry/pinentry"
 	"os"
 	"path"
 	"path/filepath"
+
+	"github.com/Tkanos/gonfig"
+	"github.com/alexflint/go-arg"
+	"github.com/foxcpp/go-assuan/pinentry"
+	"github.com/mrahbar/bitwarden-pinentry/bitwarden"
+	p "github.com/mrahbar/bitwarden-pinentry/pinentry"
 )
 
 const ConfigFileName = "bitwarden-pinentry.json"
 const LogFileName = "bitwarden-pinentry.log"
 
-
 func main() {
-	config := flag.String("config", "", "path to bitwarden-pinentry.json file")
-	flag.Parse()
+	var args struct {
+		Display string
+		Config  string `help:"path to bitwarden-pinentry.json file"`
+	}
+
+	err := arg.Parse(&args)
+	if err != nil {
+		panic(err)
+	}
 
 	ex, err := os.Executable()
 	if err != nil {
 		panic(err)
 	}
 	exPath := filepath.Dir(ex)
-	configpath := *config
-	if *config == "" {
+	configpath := args.Config
+	if args.Config == "" {
 		configpath = path.Join(exPath, ConfigFileName)
 	}
 
