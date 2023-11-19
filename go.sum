@@ -1,5 +1,7 @@
 github.com/Tkanos/gonfig v0.0.0-20181026195835-d119f39e8aa1 h1:JexjtR69NVVWUxqmjT6ZIQhaaQZU3L/qYZLRA97Y/YM=
 github.com/Tkanos/gonfig v0.0.0-20181026195835-d119f39e8aa1/go.mod h1:oc7DWmnHGjdSM8iTQUwlIi/2py6BNMVztwiw6UKjh4Y=
+github.com/Tkanos/gonfig v0.0.0-20210106201359-53e13348de2f h1:cFaJRCey4fkSAjxOmXEd8/obfkw/eKh721NQxuKFQl0=
+github.com/Tkanos/gonfig v0.0.0-20210106201359-53e13348de2f/go.mod h1:oc7DWmnHGjdSM8iTQUwlIi/2py6BNMVztwiw6UKjh4Y=
 github.com/foxcpp/go-assuan v1.0.0 h1:KDSEmEGdHOzOjKmFUoaX/FGk1NxG/mHNAIdyksM8e4A=
 github.com/foxcpp/go-assuan v1.0.0/go.mod h1:dQEJ9EaSSrUjd/g2PVaVEuV0TaoMDGwoh9XIDH1Q/Sc=
 github.com/ghodss/yaml v1.0.0 h1:wQHKEahhL6wmXdzwWG11gIVCkOv05bNOh+Rxn0yngAk=
@@ -7,3 +9,5 @@ github.com/ghodss/yaml v1.0.0/go.mod h1:4dBDuWmgqj2HViK6kFavaiC9ZROes6MMH2rRYeME
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=
 gopkg.in/yaml.v2 v2.2.1 h1:mUhvW9EsL+naU5Q3cakzfE91YhliOondGd6ZrsDBHQE=
 gopkg.in/yaml.v2 v2.2.1/go.mod h1:hI93XBmqTisBFMUTm0b8Fm+jr3Dg1NNxqwp+5A1VGuI=
+gopkg.in/yaml.v2 v2.4.0 h1:D8xgwECY7CYvx+Y2n4sBz93Jn9JRvxdiyyo8CTfuKaY=
+gopkg.in/yaml.v2 v2.4.0/go.mod h1:RDklbk79AGWmwhnvt/jBztapEOGDOx6ZbXqjP6csGnQ=
