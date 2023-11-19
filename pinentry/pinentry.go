@@ -19,7 +19,8 @@ type BitwardenClient struct {
 // GetPIN shows window with password textbox, Cancel and Ok buttons.
 // Error is returned if Cancel is pressed.
 func (c *BitwardenClient) GetPIN(settings pinentry.Settings) (string, *common.Error){
-	c.Auditor.Println("GETPIN got called")
+	c.Auditor.Println("GETPIN got called with settings:")
+	c.Auditor.Printf("GETPIN: %+v\n", settings)
 	c.Auditor.Println("GETPIN: executing bw get item")
 	cmd := exec.Command("bw", "get", "item", c.ItemId, "--session", c.Session)
 	var out bytes.Buffer
