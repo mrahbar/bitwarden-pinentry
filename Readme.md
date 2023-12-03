@@ -7,12 +7,14 @@ Currently it is expected that the passphrase is the login password of an item st
 ````bitwarden-pinentry```` need the [Bitwarden-CLI](https://help.bitwarden.com/article/cli) to be installed on the machine.
 
 ### Configuration
-````bitwarden-pinentry```` needs a configuration file specifing the bitwarden-cli sessionID (may also be provided via ```` BW_SESSION ````  environment variable) and itemID (may also be provided via ```` BW_ITEMID ````  environment variable).
+````bitwarden-pinentry```` needs a configuration file specifying the bitwarden-cli sessionID (may also be provided via ```` BW_SESSION ````  environment variable) and itemID (may also be provided via ```` BW_ITEMID ````  environment variable).
 An minimal example would look like this:
 ````
 {
-  "Session": "...",
-  "ItemID": "..."
+  "Session": "...", // SessionID retrieved from bw login
+  "ItemID": "...", // ID of secret retreived from visiting https://vault.bitwarden.com/#/vault
+  "LogPath": "...", // Since StdOut is used for pinetry callback this file is used for Logs
+  "EnableLog" : true // Enable or disable logs
 }
  ```` 
 

@@ -1,8 +1,8 @@
 package main
 
 import (
+	"encoding/json"
 	"flag"
-	"github.com/Tkanos/gonfig"
 	"github.com/foxcpp/go-assuan/pinentry"
 	"github.com/mrahbar/bitwarden-pinentry/bitwarden"
 	p "github.com/mrahbar/bitwarden-pinentry/pinentry"
@@ -13,7 +13,6 @@ import (
 
 const ConfigFileName = "bitwarden-pinentry.json"
 const LogFileName = "bitwarden-pinentry.log"
-
 
 func main() {
 	config := flag.String("config", "", "path to bitwarden-pinentry.json file")
@@ -29,12 +28,7 @@ func main() {
 		configpath = path.Join(exPath, ConfigFileName)
 	}
 
-	configuration := bitwarden.Configuration{}
-	err = gonfig.GetConf(configpath, &configuration)
-	if err != nil {
-		panic(err)
-	}
-
+	configuration := loadConfig(configpath)
 	logPath := path.Join(exPath, LogFileName)
 	if configuration.LogPath != "" {
 		logPath = configuration.LogPath
@@ -47,6 +41,28 @@ func main() {
 
 	auditor.Println("Loaded bitwarden-pinentry.json config")
 	startServe(configuration, auditor)
+}
+
+func loadConfig(configpath string) bitwarden.Configuration {
+	bytes, err := os.ReadFile(configpath)
+	if err != nil {
+		panic(err)
+	}
+
+	configuration := bitwarden.Configuration{}
+	err = json.Unmarshal(bytes, &configuration)
+	if err != nil {
+		panic(err)
+	}
+
+	if session, exists := os.LookupEnv("BW_SESSION"); exists {
+		configuration.Session = session
+	}
+	if item, exists := os.LookupEnv("BW_ITEMID"); exists {
+		configuration.ItemID = item
+	}
+
+	return configuration
 }
 
 func startServe(conf bitwarden.Configuration, auditor *p.Auditor) {
